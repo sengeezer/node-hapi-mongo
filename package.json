@@ -1,0 +1,35 @@
+{
+  "name": "hapi-mongo",
+  "version": "0.0.1",
+  "description": "An API based on Node JS, Hapi and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sengeezer/hapi-mongo.git"
+  },
+  "keywords": [
+    "node",
+    "js",
+    "hapi",
+    "mongo",
+    "mongodb",
+    "db",
+    "api"
+  ],
+  "author": "Fabio M. Albertin <fabio@albertin.co.uk> (http://ifab.io/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sengeezer/hapi-mongo/issues"
+  },
+  "homepage": "https://github.com/sengeezer/hapi-mongo#readme",
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^20.0.1",
+    "joi": "^17.2.1",
+    "mongojs": "^3.1.0",
+    "uuid": "^8.3.1"
+  }
+}
