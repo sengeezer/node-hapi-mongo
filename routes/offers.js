@@ -108,8 +108,34 @@ const routesOffers = {
             return h.response(Boom.notFound());
           }
 
-          h.response().code(204);
+          return h.response().code(204);
         });
+      }
+    });
+
+    server.route({  
+      method: 'DELETE',
+      path: '/offers/{id}',
+      options: {
+        auth: false,
+        description: 'Delete offer',
+        notes: 'Delete an offer',
+        tags: ['api']
+      },
+      handler: (request, h) => {
+        db.offers.remove({
+          _id: request.params.id
+        }, (err, result) => {
+          if (err) {
+            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
+          }
+
+          if (result.n === 0) {
+            return h.response(Boom.notFound());
+          }
+
+          return h.response().code(204);
+      });
       }
     });
   }
