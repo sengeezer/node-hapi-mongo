@@ -1,4 +1,5 @@
 const Hapi = require('@hapi/hapi');
+const mongojs = require('mongojs');
 
 const server = new Hapi.Server({
   port: 3001,
@@ -9,6 +10,9 @@ const server = new Hapi.Server({
     },
   }
 });
+
+//Connect to db
+server.app.db = mongojs('hapi-rest-mongo', ['offers']);
 
 server.route({  
   method: 'GET',
