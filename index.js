@@ -1,10 +1,13 @@
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
-const server = new Hapi.Server();  
-
-server.connection({  
+const server = new Hapi.Server({
+  port: 3001,
   host: 'localhost',
-  port: 3000
+  routes: {
+    cors: {
+      origin: ['*'],
+    },
+  }
 });
 
 server.route({  
@@ -21,4 +24,10 @@ server.start((err) => {
   }
   
   console.log('Server running at:', server.info.uri);
+});
+
+process.on('unhandledRejection', err => {
+  console.log(err);
+
+  process.exit(1);
 });
