@@ -5,7 +5,7 @@
 **Required software:** Node JS, Docker
 
 * Install the required Node packages using `npm install`
-* Start the MongoDB server: `docker run --name offers -d mongo:4.4`
+* Start the MongoDB server: `docker run --name offers -p 27017:27017 -d mongo:4.4`
 * Start the API server: `npm start` (Dev mode: `npm run dev`)
 
 ## Credits
