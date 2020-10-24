@@ -12,15 +12,27 @@ const routesOffers = {
     server.route({  
       method: 'GET',
       path:'/offers',
-      handler: (request, h) => {
-        db.offers.find((err, docs) => {
-          if (err) {
-            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-          }
+      handler: async (request, h) => {
+        try {
+          let offers = await db.offers.find((err, docs) => {
+            if (err) {
+              return h.response(Boom.wrap(err, 'Internal MongoDB error'));
+            }
+            // console.log(docs);
+            return docs;
+          });
 
-          return h.response(docs);
-        });
+          return h.response(offers);
+        } catch (error) {
+          return h.response(Boom.notFound(`No offers found: ${error}`)).code(500);
+        }
         
+
+        // if (!offers) {
+        //   return h.response(Boom.notFound('No offers found')).code(500);
+        // }
+
+        // return h.response(offers);
       }
     });
 
@@ -46,7 +58,7 @@ const routesOffers = {
 
     server.route({  
       method: 'POST',
-      path: '/offers/',
+      path: '/offers',
       options: {
         auth: false,
         validate: {
@@ -62,13 +74,13 @@ const routesOffers = {
         notes: 'Create an offer',
         tags: ['api']
       },
-      handler: (request, h) => {
+      handler: async (request, h) => {
         const offer = request.payload;
 
         // Create an id
         offer._id = uuid.v1();
 
-        db.offer.save(offer, (err, result) => {
+        await db.offers.save(offer, (err, result) => {
           if (err) {
             return h.response(Boom.wrap(err, 'Internal MongoDB error'));
           }
