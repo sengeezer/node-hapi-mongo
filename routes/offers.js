@@ -7,55 +7,36 @@ const routesOffers = {
   name: 'routes-offers',
   version: '0.0.1',
   register: async (server, options) => {
-    const db = server.app.db;
+    const { model } = server.app.db;
 
     server.route({  
       method: 'GET',
       path:'/offers',
       handler: async (request, h) => {
         try {
-          let offers = await db.offers.find((err, docs) => {
-            if (err) {
-              return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-            }
-            // console.log(docs);
-            return docs;
-          });
+          let offers = await model.find().exec();
 
           return h.response(offers);
-        } catch (error) {
-          return h.response(Boom.notFound(`No offers found: ${error}`)).code(500);
-        }
-        
-
-        // if (!offers) {
-        //   return h.response(Boom.notFound('No offers found')).code(500);
-        // }
-
-        // return h.response(offers);
+       } catch(error) {
+          return h.response(error).code(500);
+       }
       }
     });
 
     server.route({  
       method: 'GET',
       path: '/offers/{id}',
-      handler: (request, h) => {
-        db.offers.findOne({
-          _id: request.params.id
-        }, (err, doc) => {
-          if (err) {
-            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-          }
-  
-          if (!doc) {
-            return h.response(Boom.notFound());
-          }
-  
-          return h.response(doc);
-        });
+      handler: async (request, h) => {
+        try {
+          let offer = await model.findById(request.params.id).exec();
+
+          return h.response(offer);
+       } catch(error) {
+          return h.response(error).code(500);
+       }
       }
     });
-
+/*
     server.route({  
       method: 'POST',
       path: '/offers',
@@ -150,6 +131,7 @@ const routesOffers = {
       });
       }
     });
+    */
   }
 };
 

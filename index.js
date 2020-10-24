@@ -1,5 +1,5 @@
 const Hapi = require('@hapi/hapi');
-const mongojs = require('mongojs');
+const mongoose = require('mongoose');
 
 const server = new Hapi.Server({
   port: 3001,
@@ -11,7 +11,17 @@ const server = new Hapi.Server({
   }
 });
 
-server.app.db = mongojs('hapi-rest-mongo', ['offers']);
+// server.app.db = mongojs('hapi-rest-mongo', ['offers']);
+mongoose.connect('mongodb://localhost/hapi-rest-mongo', { useNewUrlParser: true });
+
+const OfferModel = mongoose.model('offer', {
+  name: String,
+  items: Array,
+  price: Number,
+  expires: Date
+});
+
+server.app.db = { model: OfferModel };
 
 const init = async () => {
   await server.register(
