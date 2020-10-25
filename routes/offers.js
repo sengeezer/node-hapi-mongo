@@ -5,7 +5,7 @@ const handleError = require('../utils/handleError');
 
 const routesOffers = {
   name: 'routes-offers',
-  version: '0.0.1',
+  version: '1.0.1',
   register: async (server, options) => {
     const { model } = server.app.db;
 
@@ -103,7 +103,7 @@ const routesOffers = {
       handler: async (request, h) => {
         try {
           let result = await model.findByIdAndDelete(request.params.id);
-          
+
           return h.response(result);
         } catch (error) {
           return h.response(error).code(500);

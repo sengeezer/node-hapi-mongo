@@ -1,6 +1,6 @@
 {
   "name": "hapi-mongo",
-  "version": "0.0.1",
+  "version": "1.0.1",
   "description": "An API based on Node JS, Hapi and MongoDB",
   "main": "index.js",
   "scripts": {
