@@ -36,12 +36,11 @@ const routesOffers = {
        }
       }
     });
-/*
+
     server.route({  
       method: 'POST',
       path: '/offers',
       options: {
-        auth: false,
         validate: {
           payload: Joi.object({
             name: Joi.string().required().note('Offer name'),
@@ -56,29 +55,24 @@ const routesOffers = {
         tags: ['api']
       },
       handler: async (request, h) => {
-        const offer = request.payload;
+        try {
+          let offer = new model(request.payload);
+          let result = await offer.save();
 
-        // Create an id
-        offer._id = uuid.v1();
-
-        await db.offers.save(offer, (err, result) => {
-          if (err) {
-            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-          }
-
-          return h.response(offer);
-        });
+          return h.response(result);
+        } catch(error) {
+          return h.response(error).code(500);
+        }
       }
     });
 
     server.route({  
-      method: 'PATCH',
+      method: 'PUT',
       path: '/offers/{id}',
       options: {
-        auth: false,
         validate: {
           payload: Joi.object({
-            name: Joi.string().required().note('Offer name'),
+            name: Joi.string().optional().note('Offer name'),
             expires: Joi.date().greater('now').optional().note('Offer expiration date')
           }).required().min(1),
           failAction: handleError
@@ -87,22 +81,14 @@ const routesOffers = {
         notes: 'Update an offer',
         tags: ['api']
       },
-      handler: (request, h) => {
-        db.offers.update({
-          _id: request.params.id
-        }, {
-          $set: request.payload
-        }, (err, result) => {
-          if (err) {
-            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-          }
+      handler: async (request, h) => {
+        try {
+          let result = await model.findByIdAndUpdate(request.params.id, request.payload, { new : true });
 
-          if (result.n === 0) {
-            return h.response(Boom.notFound());
-          }
-
-          return h.response().code(204);
-        });
+          return h.response(result);
+        } catch (error) {
+           return h.response(error).code(500);
+        }
       }
     });
 
@@ -110,28 +96,20 @@ const routesOffers = {
       method: 'DELETE',
       path: '/offers/{id}',
       options: {
-        auth: false,
         description: 'Delete offer',
         notes: 'Delete an offer',
         tags: ['api']
       },
-      handler: (request, h) => {
-        db.offers.remove({
-          _id: request.params.id
-        }, (err, result) => {
-          if (err) {
-            return h.response(Boom.wrap(err, 'Internal MongoDB error'));
-          }
-
-          if (result.n === 0) {
-            return h.response(Boom.notFound());
-          }
-
-          return h.response().code(204);
-      });
+      handler: async (request, h) => {
+        try {
+          let result = await model.findByIdAndDelete(request.params.id);
+          
+          return h.response(result);
+        } catch (error) {
+          return h.response(error).code(500);
+        }
       }
     });
-    */
   }
 };
 
