@@ -1,5 +1,4 @@
 const Boom = require('@hapi/boom');
-const uuid = require('uuid');
 const Joi = require('joi');
 const handleError = require('../utils/handleError');
 
