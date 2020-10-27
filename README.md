@@ -10,4 +10,4 @@
 
 ## Credits
 
-* Based on [an article by Patrick Meier](https://patrick-meier.io/build-a-restful-api-using-hapi-js-and-mongodb/).
+* Based on [an article by Patrick Meier](https://patrick-meier.io/build-a-restful-api-using-hapi-js-and-mongodb/) and another article on [Programmerblog](http://programmerblog.net/restful-api-using-nodejs-and-hapi-framework/).
